@@ -587,6 +587,7 @@ enum algos {
         ALGO_ARGON2D1000,
         ALGO_ARGON2D16000,
         ALGO_ARGON2D4096,
+        ALGO_ARGON2ID1024,
         ALGO_AXIOM,       
         ALGO_BLAKE,       
         ALGO_BLAKE2B,
@@ -597,6 +598,7 @@ enum algos {
         ALGO_C11,         
         ALGO_DEEP,
         ALGO_DMD_GR,
+        ALGO_DUALPOWDPC,
         ALGO_GROESTL,     
         ALGO_HEX,
         ALGO_HMQ1725,
@@ -684,6 +686,7 @@ static const char* const algo_names[] = {
         "argon2d1000",
         "argon2d16000",
         "argon2d4096",
+        "argon2id1024",
         "axiom",
         "blake",
         "blake2b",
@@ -694,6 +697,7 @@ static const char* const algo_names[] = {
         "c11",
         "deep",
         "dmd-gr",
+        "dualpowdpc",
         "groestl",
         "hex",
         "hmq1725",
@@ -846,6 +850,7 @@ Options:\n\
                           argon2d1000\n\
                           argon2d16000\n\
                           argon2d4096\n\
+                          argon2id1024\n\
                           axiom         Shabal-256 MemoHash\n\
                           blake         blake256r14 (SFR)\n\
                           blake2b       Blake2b 256\n\
@@ -856,6 +861,7 @@ Options:\n\
                           c11           Chaincoin\n\
                           deep          Deepcoin (DCN)\n\
                           dmd-gr        Diamond\n\
+                          dualpowdpc    Dpowcoin\n\
                           groestl       Groestl coin\n\
                           hex           x16r-hex\n\
                           hmq1725       Espers\n\

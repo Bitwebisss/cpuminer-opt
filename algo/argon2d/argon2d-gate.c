@@ -2,7 +2,7 @@
 #include "simd-utils.h"
 #include "argon2d/argon2.h"
 
-static const size_t INPUT_BYTES = 80;  // Lenth of a block header in bytes. Input Length = Salt Length (salt = input)
+static const size_t INPUT_BYTES = 80;  // Length of a block header in bytes. Input Length = Salt Length (salt = input)
 static const size_t OUTPUT_BYTES = 32; // Length of output needed for a 256-bit hash
 static const unsigned int DEFAULT_ARGON2_FLAG = 2; //Same as ARGON2_DEFAULT_FLAGS
 
@@ -216,3 +216,42 @@ bool register_argon2d4096_algo( algo_gate_t* gate )
         return true;
 }
 
+
+// Bitweb (argon2id1024)
+
+void argon2id1024_hash( void *output, const void *input )
+{
+    argon2_context context;
+    context.out        = (uint8_t *)output;
+    context.outlen     = (uint32_t)OUTPUT_BYTES;
+    context.pwd        = (uint8_t *)input;
+    context.pwdlen     = (uint32_t)INPUT_BYTES;
+    context.salt       = (uint8_t *)input;   // salt = input, идентично block.cpp
+    context.saltlen    = (uint32_t)INPUT_BYTES;
+    context.secret     = NULL;
+    context.secretlen  = 0;
+    context.ad         = NULL;
+    context.adlen      = 0;
+    context.allocate_cbk = NULL;
+    context.free_cbk   = NULL;
+    context.flags      = ARGON2_DEFAULT_FLAGS; // 0, как внутри argon2id_hash_raw
+    context.t_cost     = 3;
+    context.m_cost     = 1024;
+    context.lanes      = 1;
+    context.threads    = 1;
+    context.version    = ARGON2_VERSION_13;
+
+    // Прямой вызов: пишет в output напрямую, без malloc/memcpy/free
+    const int rc = argon2_ctx( &context, Argon2_id );
+    if ( unlikely( rc != ARGON2_OK ) )
+        applog( LOG_ERR, "argon2id1024_hash: argon2 error %d: %s",
+                rc, argon2_error_message( rc ) );
+}
+
+bool register_argon2id1024_algo( algo_gate_t* gate )
+{
+    gate->scanhash = (void*)&scanhash_argon2d;
+    gate->hash     = (void*)&argon2id1024_hash;
+    opt_target_factor = 65536.0;
+    return true;
+}

@@ -300,6 +300,7 @@ bool register_algo_gate( int algo, algo_gate_t *gate )
     case ALGO_ARGON2D1000:  rc = register_argon2d1000_algo   ( gate ); break;
     case ALGO_ARGON2D16000: rc = register_argon2d16000_algo  ( gate ); break;
     case ALGO_ARGON2D4096:  rc = register_argon2d4096_algo   ( gate ); break;
+    case ALGO_ARGON2ID1024: rc = register_argon2id1024_algo  ( gate ); break;
     case ALGO_AXIOM:        rc = register_axiom_algo         ( gate ); break;
     case ALGO_BLAKE:        rc = register_blake_algo         ( gate ); break;
     case ALGO_BLAKE2B:      rc = register_blake2b_algo       ( gate ); break;
@@ -309,6 +310,7 @@ bool register_algo_gate( int algo, algo_gate_t *gate )
     case ALGO_C11:          rc = register_c11_algo           ( gate ); break;
     case ALGO_DEEP:         rc = register_deep_algo          ( gate ); break;
     case ALGO_DMD_GR:       rc = register_dmd_gr_algo        ( gate ); break;
+    case ALGO_DUALPOWDPC:   rc = register_dualpowdpc_algo    ( gate ); break;
     case ALGO_GROESTL:      rc = register_groestl_algo       ( gate ); break;
     case ALGO_HEX:          rc = register_hex_algo           ( gate ); break;
     case ALGO_HMQ1725:      rc = register_hmq1725_algo       ( gate ); break;
@@ -424,7 +426,9 @@ const char* const algo_alias_map[][2] =
   { "blake256r8",        "blakecoin"      },
   { "blake256r8vnl",     "vanilla"        },
   { "blake256r14",       "blake"          },
+  { "bitweb",            "argon2id1024"   },
   { "diamond",           "dmd-gr"         },
+  { "dpowcoin",          "dualpowdpc"     },
   { "espers",            "hmq1725"        },
   { "flax",              "c11"            },
   { "hsr",               "x13sm3"         },
