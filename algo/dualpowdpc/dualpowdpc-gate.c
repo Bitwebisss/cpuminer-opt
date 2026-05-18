@@ -184,7 +184,7 @@ int scanhash_dualpowdpc(struct work *work, uint32_t max_nonce,
         }
 
         // yespower_tls convention: 0 = успех, ненулевое = ошибка
-        if (yespower_hash_internal((char*)endiandata, (char*)vhash, thr_id) == 0) {
+        if (yespower_hash_internal((char*)endiandata, (char*)vhash, thr_id)) {
             // Check work restart after yespower
             if (work_restart[thr_id].restart) {
                 *hashes_done = argon_count;
