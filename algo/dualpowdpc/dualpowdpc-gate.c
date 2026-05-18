@@ -183,7 +183,6 @@ int scanhash_dualpowdpc(struct work *work, uint32_t max_nonce,
             return 0;
         }
 
-        // yespower_tls convention: 0 = успех, ненулевое = ошибка
         if (yespower_hash_internal((char*)endiandata, (char*)vhash, thr_id)) {
             // Check work restart after yespower
             if (work_restart[thr_id].restart) {
