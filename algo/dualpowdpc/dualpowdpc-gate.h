@@ -7,6 +7,8 @@
 
 bool register_dualpowdpc_algo(algo_gate_t *gate);
 
+void argon2idDPC_hash(const char *input, char *output);
+
 int scanhash_dualpowdpc(struct work *work, uint32_t max_nonce,
                         uint64_t *hashes_done, struct thr_info *mythr);
 
