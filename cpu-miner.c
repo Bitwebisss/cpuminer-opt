@@ -696,20 +696,15 @@ static bool gbt_work_decode( const json_t *val, struct work *work )
       le32enc( (uint32_t *)(cbtx+37), 0xffffffff ); /* prev txout index */
       cbtx_size = 43;
       /* BIP 34: height in coinbase */
-      if ( work->height >= 1 && work->height <= 16 )
-      {
-         cbtx[42] = 0x50 + (uint8_t)work->height;
-         cbtx[41] = 1;
-      }
-      else
-      {
-         for ( n = work->height; n; n >>= 8 )
-            cbtx[cbtx_size++] = n & 0xff;
-         if (cbtx[cbtx_size - 1] & 0x80)
-            cbtx[cbtx_size++] = 0;
-         cbtx[42] = cbtx_size - 43;
-         cbtx[41] = cbtx_size - 42; /* scriptsig length */
-      }
+      for ( n = work->height; n; n >>= 8 )
+         cbtx[cbtx_size++] = n & 0xff;
+      /* If the last byte pushed is >= 0x80, then we need to add
+         another zero byte to signal that the block height is a
+         positive number.  */
+      if (cbtx[cbtx_size - 1] & 0x80)
+         cbtx[cbtx_size++] = 0;
+      cbtx[42] = cbtx_size - 43;
+      cbtx[41] = cbtx_size - 42; /* scriptsig length */
       le32enc( (uint32_t *)( cbtx+cbtx_size ), 0xffffffff ); /* sequence */
       cbtx_size += 4;
       cbtx[cbtx_size++] = segwit ? 2 : 1; /* out-counter */
