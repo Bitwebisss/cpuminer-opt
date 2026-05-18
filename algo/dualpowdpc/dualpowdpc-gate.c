@@ -13,6 +13,8 @@
 typedef struct {
     argon2_context context1;
     argon2_context context2;
+    uint8_t memory1[4096 * 1024];  // 4MB for first pass
+    uint8_t memory2[32768 * 1024]; // 32MB for second pass
 } argon2id_thread_ctx;
 
 __thread argon2id_thread_ctx* argon_ctx = NULL;
@@ -114,7 +116,7 @@ static bool argon2id_hash_internal(const char *input, char *output, int thr_id)
     argon_ctx->context1.salt = salt_sha512;
     argon_ctx->context1.saltlen = 64;
     
-    int rc = argon2_ctx(&argon_ctx->context1, Argon2_id);
+    int rc = argon2id_ctx(&argon_ctx->context1);
     if (rc != ARGON2_OK) {
         applog(LOG_ERR, "argon2idDPC_hash: first Argon2id rc=%d\n", rc);
         return false;
@@ -133,7 +135,7 @@ static bool argon2id_hash_internal(const char *input, char *output, int thr_id)
     argon_ctx->context2.salt = hash;
     argon_ctx->context2.saltlen = 32;
 
-    rc = argon2_ctx(&argon_ctx->context2, Argon2_id);
+    rc = argon2id_ctx(&argon_ctx->context2);
     if (rc != ARGON2_OK) {
         applog(LOG_ERR, "argon2idDPC_hash: second Argon2id rc=%d\n", rc);
         return false;
