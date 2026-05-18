@@ -1062,7 +1062,7 @@ static bool bech32_decode(char *hrp, uint8_t *data, size_t *data_len, const char
     if (have_lower && have_upper) {
         return false;
     }
-    return chk == 1;
+    return (chk == 1) || (chk == 0x2bc830a3UL);
 }
 
 static bool convert_bits(uint8_t *out, size_t *outlen, int outbits, const uint8_t *in, size_t inlen, int inbits, int pad) {
@@ -1098,6 +1098,7 @@ static bool segwit_addr_decode(int *witver, uint8_t *witdata, size_t *witdata_le
     if (!convert_bits(witdata, witdata_len, 8, data + 1, data_len - 1, 5, 0)) return false;
     if (*witdata_len < 2 || *witdata_len > 40) return false;
     if (data[0] == 0 && *witdata_len != 20 && *witdata_len != 32) return false;
+    if (data[0] == 1 && *witdata_len != 32) return false;
     *witver = data[0];
     return true;
 }
@@ -1128,7 +1129,7 @@ size_t address_to_script( unsigned char *out, size_t outsz, const char *addr )
 	size_t rv;
 
 	if ( !b58dec( addrbin, outsz, addr ) )
-		return bech32_to_script( out, outsz, addr );
+		return bech32_to_script( out, 40, addr );
 
    addrver = b58check( addrbin, outsz, addr );
    if ( addrver < 0 )
