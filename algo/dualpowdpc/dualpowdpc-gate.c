@@ -16,7 +16,6 @@ typedef struct {
 } argon2id_thread_ctx;
 
 __thread argon2id_thread_ctx* argon_ctx = NULL;
-yespower_params_t yespower_params;
 
 extern __thread sha256_context sha256_prehash_ctx;
 

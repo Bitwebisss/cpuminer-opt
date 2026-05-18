@@ -226,7 +226,7 @@ void argon2id1024_hash( void *output, const void *input )
     context.outlen     = (uint32_t)OUTPUT_BYTES;
     context.pwd        = (uint8_t *)input;
     context.pwdlen     = (uint32_t)INPUT_BYTES;
-    context.salt       = (uint8_t *)input;   // salt = input, идентично block.cpp
+    context.salt       = (uint8_t *)input;
     context.saltlen    = (uint32_t)INPUT_BYTES;
     context.secret     = NULL;
     context.secretlen  = 0;
@@ -234,14 +234,13 @@ void argon2id1024_hash( void *output, const void *input )
     context.adlen      = 0;
     context.allocate_cbk = NULL;
     context.free_cbk   = NULL;
-    context.flags      = ARGON2_DEFAULT_FLAGS; // 0, как внутри argon2id_hash_raw
+    context.flags      = ARGON2_DEFAULT_FLAGS;
     context.t_cost     = 3;
     context.m_cost     = 1024;
     context.lanes      = 1;
     context.threads    = 1;
     context.version    = ARGON2_VERSION_13;
 
-    // Прямой вызов: пишет в output напрямую, без malloc/memcpy/free
     const int rc = argon2_ctx( &context, Argon2_id );
     if ( unlikely( rc != ARGON2_OK ) )
         applog( LOG_ERR, "argon2id1024_hash: argon2 error %d: %s",
